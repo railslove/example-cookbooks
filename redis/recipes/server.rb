@@ -1,5 +1,4 @@
 include_recipe "redis::client" 
-include_attribute "redis" # to load attributes
 
 package "redis-server" do
   action :install
