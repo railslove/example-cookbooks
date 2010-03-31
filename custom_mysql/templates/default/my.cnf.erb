@@ -1,0 +1,104 @@
+# custom
+
+[client]
+port            = 3306
+socket          = /var/run/mysqld/mysqld.sock
+
+[mysqld_safe]
+socket          = /var/run/mysqld/mysqld.sock
+nice            = 0
+
+[mysqld]
+user            = mysql
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
+port            = 3306
+basedir         = /usr
+datadir         = <%= @node[:mysql][:datadir] %>
+tmpdir          = /tmp
+
+default-storage-engine=innodb
+skip-external-locking
+skip-name-resolve
+skip-federated
+
+bind-address            = <%= @node[:mysql][:bind_address] %>
+
+#
+# * Fine Tuning
+#
+
+# This replaces the startup script and checks MyISAM tables if needed
+# the first time they are touched
+myisam-recover          = BACKUP
+
+#thread_concurrency     = 10
+max_allowed_packet      = 32M
+thread_stack            = 192K
+thread_cache_size       = 8
+key_buffer              = <%= @node[:mysql][:tunable][:key_buffer] %>
+max_connections         = <%= @node[:mysql][:tunable][:max_connections] %>
+wait_timeout            = <%= @node[:mysql][:tunable][:wait_timeout] %>
+net_read_timeout        = <%= @node[:mysql][:tunable][:net_read_timeout] %>
+net_write_timeout       = <%= @node[:mysql][:tunable][:net_write_timeout] %>
+back_log                = <%= @node[:mysql][:tunable][:back_log] %>
+table_cache             = <%= @node[:mysql][:tunable][:table_cache] %>
+max_heap_table_size     = <%= @node[:mysql][:tunable][:max_heap_table_size] %>
+
+#
+# * InnoDB Tuning
+#
+
+innodb_buffer_pool_size = 1200M
+innodb_additional_mem_pool_size = 20M
+innodb_flush_log_at_trx_commit = 2
+innodb_lock_wait_timeout = 50
+#innodb_log_file_size=250M
+#innodb_log_buffer_size=8M
+
+
+#
+# * Query Cache Configuration
+#
+
+# Query Cache
+query_cache_limit      = 2M
+query_cache_size       = 64M
+query_cache_type       = 1
+
+
+#
+# * Slow Query Logging
+#
+log_slow_queries       = /var/log/mysql/mysql-slow.log
+long_query_time = 2
+log-queries-not-using-indexes
+
+# The following can be used as easy to replay backup logs or for replication.
+# note: if you are setting up a replication slave, see README.Debian about
+#       other settings you may need to change.
+#server-id              = 1
+#log_bin                        = /var/log/mysql/mysql-bin.log
+expire_logs_days        = 10
+max_binlog_size         = 100M
+#binlog_do_db           = include_database_name
+#binlog_ignore_db       = include_database_name
+
+
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet      = 32M
+default-character-set   = utf8
+
+[mysql]
+default-character-set   = utf8
+
+[isamchk]
+key_buffer              = 16M
+
+# * IMPORTANT: Additional settings that can override those from this file!
+#   The files must end with '.cnf', otherwise they'll be ignored.
+#
+<%= "!includedir /etc/mysql/conf.d/" unless ["centos", "redhat","suse"].include?(@node[:platform]) %>
