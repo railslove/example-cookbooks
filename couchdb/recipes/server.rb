@@ -2,8 +2,8 @@ package "couchdb"
 
 service "couchdb" do
   service_name "couchdb"
-  supports [:restart, :status]
-  action [:enable, :start]
+  supports [:start, :status, :restart]
+  action :stop
 end
 
 %w{db views log}.each do |dir|
@@ -23,4 +23,10 @@ template "/etc/couchdb/local.d/scalarium.ini" do
   group "couchdb"
   mode "0644"
   notifies :restart, resources(:service => "couchdb"), :immediately
+end
+
+service "couchdb" do
+  service_name "couchdb"
+  supports [:start, :status, :restart]
+  action :start
 end
