@@ -1,7 +1,6 @@
-service "couchdb" do
-  service_name "couchdb"
-  supports [:start, :status, :restart]
-  action :stop
+execute "stop couchdb" do
+  command "kill `ps ax | grep couch | grep -v grep | awk '{print $1}'` && echo 0"
+  action :run
 end
 
 %w{db views log}.each do |dir|
