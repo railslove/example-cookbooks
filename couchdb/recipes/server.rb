@@ -1,5 +1,3 @@
-package "couchdb"
-
 service "couchdb" do
   service_name "couchdb"
   supports [:start, :status, :restart]
