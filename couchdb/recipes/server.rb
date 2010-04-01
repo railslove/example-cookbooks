@@ -22,7 +22,6 @@ template "/etc/couchdb/local.d/scalarium.ini" do
   owner "couchdb"
   group "couchdb"
   mode "0644"
-  notifies :restart, resources(:service => "couchdb"), :immediately
 end
 
 service "couchdb" do
