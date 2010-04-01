@@ -1,6 +1,7 @@
 package "couchdb"
 
 service "couchdb" do
+  service_name "couchdb"
   supports [:restart, :status]
   action [:enable, :start]
 end
