@@ -6,7 +6,7 @@ end
 
 ruby_block "Install SSH host key" do
   block do
-    system("mv /vol/config-files/ssh/* /etc/ssh/")
+    system("cp -r /vol/config-files/ssh/* /etc/ssh/")
     system("chmod -R root /etc/ssh/")
   end
   
