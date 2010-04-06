@@ -4,7 +4,7 @@ service "sshd" do
   action :nothing
 end
 
-ruby_block do
+ruby_block "Install SSH host key" do
   block do
     system("mv /vol/config-files/ssh/* /etc/ssh/")
     system("chmod -R root /etc/ssh/")
