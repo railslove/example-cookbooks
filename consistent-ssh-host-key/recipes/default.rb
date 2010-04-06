@@ -7,6 +7,7 @@ end
 ruby_block do
   block do
     system("mv /vol/config-files/ssh/* /etc/ssh/")
+    system("chmod -R root /etc/ssh/")
   end
   
   only_if do
