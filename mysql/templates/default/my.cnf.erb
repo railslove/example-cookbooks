@@ -1,4 +1,4 @@
-# custom
+# custom my.cnf that overrides the default Scalarium configuration
 
 [client]
 port            = 3306
@@ -33,7 +33,7 @@ bind-address            = <%= @node[:mysql][:bind_address] %>
 myisam-recover          = BACKUP
 
 #thread_concurrency     = 10
-max_allowed_packet      = 32M
+max_allowed_packet      = 64M
 thread_stack            = 192K
 thread_cache_size       = 8
 key_buffer              = <%= @node[:mysql][:tunable][:key_buffer] %>
