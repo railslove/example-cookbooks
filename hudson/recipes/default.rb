@@ -28,6 +28,13 @@ template "/etc/default/tomcat6" do
   group "root"
 end
 
+template "/etc/tomcat6/server.xml" do
+  source "server.xml.erb"
+  mode "0644"
+  owner "root"
+  group "root"
+end
+
 template "/etc/tomcat6/context.xml" do
   source "context.xml.erb"
 end
