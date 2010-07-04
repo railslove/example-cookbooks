@@ -8,6 +8,10 @@ package "daemon"
 package "tomcat6"
 package "tomcat6-common"
 
+execute "delete default tomcat doc root" do
+  command "rm -rf /var/lib/tomcat6/webapps/ROOT*"
+end
+
 remote_file "/var/lib/tomcat6/webapps/ROOT.war" do
   source "http://hudson-ci.org/latest/hudson.war"
   mode "0664"
@@ -22,6 +26,14 @@ template "/etc/default/tomcat6" do
   mode "0644"
   owner "root"
   group "root"
+end
+
+template "/var/lib/tomcat6/conf/context.xml" do
+  source "context.xml.erb"
+end
+
+execute "ensure correct permissions" do
+  command "chmod  -R u+rwx /var/lib/tomcat6/webapps/"
 end
 
 service "tomcat6" do
