@@ -45,5 +45,5 @@ end
 
 service "tomcat6" do
   supports :restart => true, :status => true, :reload => true
-  action [:enable, :start]
+  action [:enable, :restart]
 end
