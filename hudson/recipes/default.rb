@@ -28,7 +28,7 @@ template "/etc/default/tomcat6" do
   group "root"
 end
 
-template "/var/lib/tomcat6/conf/context.xml" do
+template "/etc/tomcat6/context.xml" do
   source "context.xml.erb"
 end
 
