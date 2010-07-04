@@ -13,7 +13,7 @@ remote_file "/var/lib/tomcat6/webapps/ROOT.war" do
   mode "0664"
 end
 
-template "/etc/tomcat/policy.d/04webapps.policy" do
+template "/etc/tomcat6/policy.d/04webapps.policy" do
   source "04webapps.policy.erb"
 end
 
