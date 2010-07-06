@@ -82,19 +82,7 @@ node[:deploy].each do |application, deploy|
     environment 'RAILS_ENV' => deploy[:rails_env]
   end
 
-  execute "rake thinking_sphinx:stop" do
-    cwd "#{deploy[:deploy_to]}/current"
-    user deploy[:user]
-    environment 'RAILS_ENV' => deploy[:rails_env]
-  end
-
-  execute "rake thinking_sphinx:start" do
-    cwd "#{deploy[:deploy_to]}/current"
-    user deploy[:user]
-    environment 'RAILS_ENV' => deploy[:rails_env]
-  end
-
-  execute 'rake thinking_sphinx:index' do
+  execute 'rake thinking_sphinx:rebuild' do
     cwd "#{deploy[:deploy_to]}/current"
     user deploy[:user]
     environment 'RAILS_ENV' => deploy[:rails_env]
