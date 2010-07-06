@@ -4,7 +4,14 @@ node[:deploy].each do |application, deploy|
     next
   end
  
-  template "#{deploy[:deploy_to]}/current/config/sphinx.yml" do
+  directory "#{deploy[:deploy_to]}/current/config/thinkingsphinx" do
+    action :create
+    owner deploy[:user]
+    group deploy[:group]
+    mode "0755"
+  end
+
+  template "#{deploy[:deploy_to]}/current/config/thinkingsphinx/sphinx.yml" do
     source "sphinx.yml.erb"
     mode "0660"
     group deploy[:group]
