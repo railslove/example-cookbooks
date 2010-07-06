@@ -1,6 +1,13 @@
 include_recipe 'sphinx::client'
 
 node[:deploy].each do |application, deploy|
+  directory "/var/log/sphinx" do
+    action :create
+    owner deploy[:user]
+    group deploy[:group]
+    mode "0755"
+  end
+
   execute "rake thinking_sphinx:configure" do
     cwd "#{deploy[:deploy_to]}/current"
     user deploy[:user]
