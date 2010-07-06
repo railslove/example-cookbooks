@@ -13,7 +13,7 @@ node[:deploy].each do |application, deploy|
     revision deploy[:scm][:revision]
     migrate false
     environment "RAILS_ENV" => deploy[:rails_env], "RUBYOPT" => ""
-    symlink_before_migrate deploy[:symlink_before_migrate]
+    symlink_before_migrate({})
     restart_command "echo"
     action deploy[:action]
     case deploy[:scm][:scm_type].to_s
@@ -57,17 +57,13 @@ node[:deploy].each do |application, deploy|
     mode "0755"
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/database.yml" do
+  template "#{deploy[:deploy_to]}/current/config/database.yml" do
     source "database.yml.erb"
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
     variables(:database => deploy[:database], :environment => deploy[:rails_env])
     cookbook "rails" 
-
-    only_if do
-      File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/database.yml")
-    end
   end
 
   execute "rake thinking_sphinx:configure" do
