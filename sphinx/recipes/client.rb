@@ -42,7 +42,7 @@ node[:deploy].each do |application, deploy|
     day     '*'
     month   '*'
     weekday '*'
-    command "cd /data/#{application}/current && RAILS_ENV=#{deploy[:rails_env]} rake thinking_sphinx:index"
+    command "cd #{deploy[:deploy_to]}/current && RAILS_ENV=#{deploy[:rails_env]} rake thinking_sphinx:index"
     user deploy[:user]
   end
   
