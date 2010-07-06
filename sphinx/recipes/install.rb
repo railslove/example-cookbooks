@@ -21,3 +21,10 @@ end
 execute "./configure --with-mysql && make && make install" do
   cwd "/tmp/sphinx_install/sphinx-#{node[:sphinx][:version]}"
 end
+
+directory "/var/log/sphinx" do
+  action :create
+  owner deploy[:user]
+  group deploy[:group]
+  mode "0755"
+end
