@@ -4,8 +4,6 @@ node[:deploy].each do |application, deploy|
     next
   end
  
-  redis_server = node[:scalarium][:roles][:mysql][:instances].keys.first
-  
   template "#{deploy[:deploy_to]}/current/config/sphinx.yml" do
     source "sphinx.yml.erb"
     mode "0660"
