@@ -13,6 +13,7 @@ node[:deploy].each do |application, deploy|
     migrate false
     environment "RAILS_ENV" => deploy[:rails_env], "RUBYOPT" => ""
     symlink_before_migrate deploy[:symlink_before_migrate]
+    restart_command "echo"
     action deploy[:action]
     case deploy[:scm][:scm_type].to_s
     when 'git'
