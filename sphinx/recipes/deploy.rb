@@ -1,13 +1,46 @@
 include_recipe "deploy::user"
-include_recipe "deploy::source"
 include_recipe 'sphinx::client'
 
+directory "/var/log/sphinx" do
+  action :create
+  owner deploy[:user]
+  group deploy[:group]
+  mode "0755"
+end
+
 node[:deploy].each do |application, deploy|
-  directory "/var/log/sphinx" do
-    action :create
-    owner deploy[:user]
-    group deploy[:group]
-    mode "0755"
+  directory "#{deploy[:deploy_to]}/shared/cached-copy" do
+    recursive true
+    action :delete
+  end
+
+  deploy deploy[:deploy_to] do
+    repository deploy[:scm][:repository]
+    user deploy[:user]
+    revision deploy[:scm][:revision]
+    migrate deploy[:migrate]
+    migration_command deploy[:migrate_command]
+    environment "RAILS_ENV" => deploy[:rails_env], "RUBYOPT" => ""
+    symlink_before_migrate deploy[:symlink_before_migrate]
+    action deploy[:action]
+    restart_command "sleep #{deploy[:sleep_before_restart]} && #{deploy[:restart_command]}"
+    case deploy[:scm][:scm_type].to_s
+    when 'git'
+      scm_provider Chef::Provider::Git
+      enable_submodules deploy[:enable_submodules]
+      shallow_clone true
+    when 'svn'
+      scm_provider Chef::Provider::Subversion
+      svn_username deploy[:scm][:user]
+      svn_password deploy[:scm][:password]
+    else
+      raise "unsupported SCM type #{deploy[:scm][:scm_type].inspect}"
+    end
+  end
+
+  execute "fix access rights on deployment directory" do
+    command "chmod o-w #{deploy[:deploy_to]}"
+    action :run
   end
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
