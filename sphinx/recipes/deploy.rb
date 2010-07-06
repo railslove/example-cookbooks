@@ -1,14 +1,6 @@
 include_recipe "deploy::user"
-include_recipe 'sphinx::client'
 
 node[:deploy].each do |application, deploy|
-  directory "/var/log/sphinx" do
-    action :create
-    owner deploy[:user]
-    group deploy[:group]
-    mode "0755"
-  end
-
   directory "#{deploy[:deploy_to]}/shared/cached-copy" do
     recursive true
     action :delete
@@ -41,6 +33,17 @@ node[:deploy].each do |application, deploy|
   execute "fix access rights on deployment directory" do
     command "chmod o-w #{deploy[:deploy_to]}"
     action :run
+  end
+end
+
+include_recipe 'sphinx::client'
+
+node[:deploy].each do |application, deploy|
+  directory "/var/log/sphinx" do
+    action :create
+    owner deploy[:user]
+    group deploy[:group]
+    mode "0755"
   end
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
