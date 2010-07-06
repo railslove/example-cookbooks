@@ -11,7 +11,7 @@ node[:deploy].each do |application, deploy|
     mode "0755"
   end
 
-  template "#{deploy[:deploy_to]}/current/config/thinkingsphinx/sphinx.yml" do
+  template "#{deploy[:deploy_to]}/current/config/sphinx.yml" do
     source "sphinx.yml.erb"
     mode "0660"
     group deploy[:group]
@@ -48,5 +48,4 @@ node[:deploy].each do |application, deploy|
     command "cd #{deploy[:deploy_to]}/current && RAILS_ENV=#{deploy[:rails_env]} rake thinking_sphinx:index"
     user deploy[:user]
   end
-  
 end
