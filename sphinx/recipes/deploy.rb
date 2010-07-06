@@ -1,3 +1,4 @@
+include_recipe "deploy::rails"
 include_recipe 'sphinx::client'
 
 node[:deploy].each do |application, deploy|
