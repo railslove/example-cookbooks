@@ -1,4 +1,5 @@
 include_recipe "deploy::user"
+include_recipe "deploy::directory"
 
 node[:deploy].each do |application, deploy|
   directory "#{deploy[:deploy_to]}/shared/cached-copy" do
