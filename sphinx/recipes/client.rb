@@ -28,4 +28,15 @@ node[:deploy].each do |application, deploy|
               :host => host
   end
 
+  if node[:scalarium][:instance][:roles].include?("rails-app")
+    execute "restart Rails app #{application}" do
+      cwd deploy[:current_path]
+      command "touch tmp/restart.txt"
+      action :nothing
+    end
+
+    if deploy[:stack][:needs_reload]
+      notifies :run, resources(:execute => "restart Rails app #{application}")
+    end
+  end
 end
