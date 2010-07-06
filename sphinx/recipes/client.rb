@@ -22,7 +22,8 @@ node[:deploy].each do |application, deploy|
     end
 
     variables :application => application,
-              :deploy => deploy
+              :deploy => deploy,
+              :host => node[:scalarium][:roles][:sphinx][:instances].keys.first
   end
 
 end
