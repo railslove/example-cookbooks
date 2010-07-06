@@ -10,10 +10,6 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     owner deploy[:user]
     
-    if deploy[:stack][:needs_reload]
-      notifies :run, resources(:execute => "restart Rails app #{application}")
-    end
-    
     only_if do
       File.directory?("#{deploy[:deploy_to]}/current")
     end
