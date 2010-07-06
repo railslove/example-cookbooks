@@ -10,12 +10,10 @@ node[:deploy].each do |application, deploy|
     repository deploy[:scm][:repository]
     user deploy[:user]
     revision deploy[:scm][:revision]
-    migrate deploy[:migrate]
-    migration_command deploy[:migrate_command]
+    migrate false
     environment "RAILS_ENV" => deploy[:rails_env], "RUBYOPT" => ""
     symlink_before_migrate deploy[:symlink_before_migrate]
     action deploy[:action]
-    restart_command "sleep #{deploy[:sleep_before_restart]} && #{deploy[:restart_command]}"
     case deploy[:scm][:scm_type].to_s
     when 'git'
       scm_provider Chef::Provider::Git
@@ -28,6 +26,10 @@ node[:deploy].each do |application, deploy|
     else
       raise "unsupported SCM type #{deploy[:scm][:scm_type].inspect}"
     end
+    before_migrate lambda{}
+    after_restart lambda{}
+    before_symlink lambda{}
+    before_restart lambda{}
   end
 
   execute "fix access rights on deployment directory" do
