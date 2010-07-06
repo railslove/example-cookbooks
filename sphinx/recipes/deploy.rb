@@ -1,14 +1,14 @@
 include_recipe "deploy::user"
 include_recipe 'sphinx::client'
 
-directory "/var/log/sphinx" do
-  action :create
-  owner deploy[:user]
-  group deploy[:group]
-  mode "0755"
-end
-
 node[:deploy].each do |application, deploy|
+  directory "/var/log/sphinx" do
+    action :create
+    owner deploy[:user]
+    group deploy[:group]
+    mode "0755"
+  end
+
   directory "#{deploy[:deploy_to]}/shared/cached-copy" do
     recursive true
     action :delete
