@@ -1,6 +1,6 @@
 <%= @deploy[:rails_env] %>:
   pid_file: /var/run/sphinx/<%= @application %>.pid
-  address: localhost
+  address: <%= @host %>
   port: <%= node[:sphinx][:port] %>
   mem_limit: <%= node[:sphinx][:memory_limit] %>
   config_file: <%= @deploy[:deploy_to] %>/current/config/thinkingsphinx/<%= @deploy[:rails_env] %>.sphinx.conf
