@@ -21,9 +21,11 @@ node[:deploy].each do |application, deploy|
       File.directory?("#{deploy[:deploy_to]}/current")
     end
 
+    host = node[:scalarium][:roles][:sphinx][:instances][node[:scalarium][:roles][:sphinx][:instances].keys.first]['private_dns_name']
+
     variables :application => application,
               :deploy => deploy,
-              :host => node[:scalarium][:roles][:sphinx][:instances].keys.first
+              :host => host
   end
 
 end
