@@ -2,6 +2,16 @@ include_recipe "deploy::user"
 include_recipe "deploy::directory"
 
 node[:deploy].each do |application, deploy|
+  %w(log config system pids).each do |dir_name|
+    directory "#{deploy[:deploy_to]}/shared/#{dir_name}" do
+      group deploy[:group]
+      owner deploy[:user]
+      mode "0770"
+      action :create
+      recursive true  
+    end
+  end
+
   directory "#{deploy[:deploy_to]}/shared/cached-copy" do
     recursive true
     action :delete
