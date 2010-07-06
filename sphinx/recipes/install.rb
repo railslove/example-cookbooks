@@ -21,4 +21,3 @@ end
 execute "./configure --with-mysql && make && make install" do
   cwd "/tmp/sphinx_install/sphinx-#{node[:sphinx][:version]}"
 end
-

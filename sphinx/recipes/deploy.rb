@@ -49,6 +49,13 @@ node[:deploy].each do |application, deploy|
     mode "0755"
   end
 
+  directory "/var/run/sphinx" do
+    action :create
+    owner deploy[:user]
+    group deploy[:group]
+    mode "0755"
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     source "database.yml.erb"
     mode "0660"
