@@ -1,6 +1,6 @@
 include_recipe "deploy"
 
-node[:deploy].each do |application, deploy
+node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'rails'
     Chef::Log.debug("Skipping sunspot-solr::client as application #{application} is not a Rails app")
     next
@@ -14,7 +14,7 @@ node[:deploy].each do |application, deploy
  
   solr_server = node[:scalarium][:roles][:solr][:instances].collect{|instance, names| names["private_dns_name"]}.first
 
-  template "#{deploy}solr.yml" do
+  template "#{deploy[:current_path]}/config/solr.yml" do
     source "solr.yml.erb"
     mode "0660"
     group deploy[:group]
