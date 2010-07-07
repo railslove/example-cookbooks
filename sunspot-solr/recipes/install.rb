@@ -7,6 +7,7 @@ package "openjdk-6-jre-headless"
 user node[:sunspot_solr][:user] do
   gid 'users'
   home '/var/lib/solr'
+  shell '/bin/zsh'
   action :create
 end
 
@@ -18,7 +19,6 @@ end
 directory node[:sunspot_solr][:home] do
   action :create
   owner node[:sunspot_solr][:user]
-  shell '/bin/zsh'
   group 'users'
   mode '0755'
 end
