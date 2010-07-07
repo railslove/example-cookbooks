@@ -34,19 +34,25 @@ ruby_block do
   end
 end
 
-#service "redis-server" do
-#  service_name "redis-server"
-#
-#  supports :status => false, :restart => true, :reload => false, "force-reload" => true
-#  action :enable
-#end
+template "/etc/init.d/redis" do
+  source "redis.init.erb"
+  owner "root"
+  group "root"
+  mode "0755"
+end
 
+service "redis-server" do
+  service_name "redis-server"
+
+  supports :status => false, :restart => true, :reload => false, "force-reload" => true
+  action :enable
+end
 
 template "/etc/redis.conf" do
   source "redis.conf.erb"
   owner "root"
   group "root"
   mode "0644"
-  #notifies :restart, resources(:service => "redis-server"), :immediately
+  notifies :restart, resources(:service => "redis-server"), :immediately
 end
 
