@@ -23,6 +23,13 @@ directory node[:redis][:datadir] do
   mode '0755'
 end
 
+directory '/var/log/redis' do
+  action :create
+  owner node[:redis][:user]
+  group 'root'
+  mode '0755'
+end
+
 enclosed_node = node
 ruby_block do
   block do
