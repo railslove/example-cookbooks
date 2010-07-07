@@ -76,7 +76,7 @@ save 60 10000
 rdbcompression yes
 
 # The filename where to dump the DB
-dbfilename <%= default[:redis][:dump_file] %>
+dbfilename <%= node[:redis][:dump_file] %>
 
 # The working directory.
 #
