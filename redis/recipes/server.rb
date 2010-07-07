@@ -8,8 +8,29 @@ execute "tar xvfz /tmp/redis-#{node[:redis][:version]}" do
   cwd "/tmp"
 end
 
-execute "make && make install" do
+execute "make" do
   cwd "/tmp/redis-#{node[:redis][:version]}"
+end
+
+user "redis" do
+  shell "/bin/zsh"
+  action :create
+end
+
+directory node[:redis][:datadir] do
+  owner node[:redis][:user]
+  group 'users'
+  mode '0755'
+end
+
+ruby_block do
+  block do
+    %w{redis-server redis-cli redis-benchmark redis-check-aof redis-check-dump}.ech do |binary|
+      FileUtils.install "/tmp/redis-#{node[:redis][:version]}/#{binary}",
+                        "#{node[:redis][:prefix]}/bin", :mode => '0755'
+      FileUtils.chown node[:redis][:user], 'users', "#{node[:redis][:prefix]}/bin/#{binary}"
+    end
+  end
 end
 
 #service "redis-server" do
