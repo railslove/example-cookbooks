@@ -34,7 +34,7 @@ ruby_block do
   end
 end
 
-template "/etc/init.d/redis" do
+template "/etc/init.d/redis-server" do
   source "redis.init.erb"
   owner "root"
   group "root"
