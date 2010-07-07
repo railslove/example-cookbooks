@@ -18,7 +18,7 @@ daemonize yes
 
 # When running daemonized, Redis writes a pid file in /usr/local/brew/var/run/redis.pid by
 # default. You can specify a custom pid file location here.
-pidfile /var/run/redis.pid
+pidfile <%= node[:redis][:pid_file] %>
 
 # Accept connections on the specified port, default is 6379
 port <%= node[:redis][:port] %>
