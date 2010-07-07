@@ -1,10 +1,10 @@
 include_recipe "redis::client" 
 
-remote_file "/tmp/redis-#{node[:redis][:version]}" do
+remote_file "/tmp/redis-#{node[:redis][:version]}.tar.gz" do
   source "http://redis.googlecode.com/files/redis-#{node[:redis][:version]}.tar.gz"
 end
 
-execute "tar xvfz /tmp/redis-#{node[:redis][:version]}" do
+execute "tar xvfz /tmp/redis-#{node[:redis][:version]}.tar.gz" do
   cwd "/tmp"
 end
 
@@ -23,12 +23,13 @@ directory node[:redis][:datadir] do
   mode '0755'
 end
 
+enclosed_node = node
 ruby_block do
   block do
-    %w{redis-server redis-cli redis-benchmark redis-check-aof redis-check-dump}.ech do |binary|
-      FileUtils.install "/tmp/redis-#{node[:redis][:version]}/#{binary}",
-                        "#{node[:redis][:prefix]}/bin", :mode => '0755'
-      FileUtils.chown node[:redis][:user], 'users', "#{node[:redis][:prefix]}/bin/#{binary}"
+    %w{redis-server redis-cli redis-benchmark redis-check-aof redis-check-dump}.each do |binary|
+      FileUtils.install "/tmp/redis-#{enclosed_node[:redis][:version]}/#{binary}",
+                        "#{enclosed_node[:redis][:prefix]}/bin", :mode => 0755
+      FileUtils.chown enclosed_node[:redis][:user], 'users', "#{enclosed_node[:redis][:prefix]}/bin/#{binary}"
     end
   end
 end
