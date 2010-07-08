@@ -16,30 +16,15 @@ gem_package "sunspot" do
   retries 2
 end
 
-directory node[:sunspot_solr][:home] do
-  action :create
-  owner node[:sunspot_solr][:user]
-  group 'users'
-  mode '0755'
+[node[:sunspot_solr][:home], node[:sunspot_solr][:conf], node[:sunspot_solr][:log], node[:sunspot_solr][:pids]].each do |dir|
+  directory dir do
+    action :create
+    owner node[:sunspot_solr][:user]
+    group 'users'
+    mode '0755'
+  end
 end
 
-directory node[:sunspot_solr][:conf] do
-  action :create
-  owner node[:sunspot_solr][:user]
-  group 'users'
-  mode '0755'
-end
-
-directory node[:sunspot_solr][:log] do
-  action :create
-  owner node[:sunspot_solr][:user]
-  group 'users'
-  mode '0755'
-end
-
-execute 'start solr service' do
-  command "sunspot-solr start --port=#{node[:sunspot_solr][:port]} --pid-dir=#{node[:sunspot_solr][:pids]} --data-directory=#{node[:sunspot_solr][:home]} --min-memory=#{node[:sunspot_solr][:min_memory]} --max-memory=#{node[:sunspot_solr][:max_memory]} --log-file=#{node[:sunspot_solr][:log]}/solr.log --log-level=#{node[:sunspot_solr][:log_level]}"
+execute "monit reload && monit restart all -g solr" do
   action :run
-  user node[:sunspot_solr][:user]
-  group 'users'
 end
