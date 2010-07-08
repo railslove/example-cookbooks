@@ -25,6 +25,13 @@ end
   end
 end
 
+template "/etc/monit/conf.d/solr.monitrc" do
+  source "sunspot.monit.erb"
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
 execute "monit reload && monit restart all -g solr" do
   action :run
 end
