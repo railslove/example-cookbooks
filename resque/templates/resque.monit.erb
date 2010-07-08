@@ -1,0 +1,7 @@
+check process resque_worker<%= @queues_slug %>
+  with pidfile <%= @deploy[:deploy_to] %>/current/tmp/pids/resque_worker<%= @queues_slug %>.pid
+  start program = "/bin/sh -c 'cd <%= @deploy[:deploy_to] %>/current; RAILS_ENV=<%= @deploy[:rails_env] %> QUEUE=<%= node[:resque][:queues] %> VERBOSE=1 nohup rake resque:work& &> log/resque_worker<%= @queues_slug %>.log && echo $! > tmp/pids/resque_worker.pid'" as uid <%= @deploy[:user] %> and gid <%= @deploy[:group] %>
+  stop program = "/bin/sh -c 'cd <%= @deploy[:deploy_to] %>/current && kill -s QUIT `cat tmp/pids/resque_worker<%= @queues_slug %>.pid` && rm -f tmp/pids/resque_worker<%= @queues_slug %>.pid; exit 0;'"
+  if totalmem is greater than 300 MB for 10 cycles then restart  # eating up memory?
+  group resque_workers_<%= @application %>
+
