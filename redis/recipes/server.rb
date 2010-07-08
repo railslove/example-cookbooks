@@ -63,3 +63,13 @@ template "/etc/redis.conf" do
   notifies :restart, resources(:service => "redis-server"), :immediately
 end
 
+template "/etc/monit/conf.d/redis.monitrc" do
+  source "redis.monit.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
+execute "monit reload" do
+  action :run
+end
