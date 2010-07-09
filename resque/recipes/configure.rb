@@ -20,7 +20,9 @@ node[:deploy].each do |application, deploy|
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:host => node[:scalarium][:roles][:redis][:instances][redis_server][:private_dns_name])
+    variables :host => node[:scalarium][:roles][:redis][:instances][redis_server][:private_dns_name],
+              :deploy => deploy,
+              :application => application
     
     if deploy[:stack][:needs_reload]
       notifies :run, resources(:execute => "restart Rails app #{application}")
