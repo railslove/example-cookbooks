@@ -1,5 +1,5 @@
 <% 1.upto(node[:resque][:workers].to_i) do |worker| %>
-  check process resque_worker_<%= @application %><%= @queues_slug %>_<%= worker %>
+check process resque_worker_<%= @application %><%= @queues_slug %>_<%= worker %>
   with pidfile <%= @deploy[:deploy_to] %>/current/tmp/pids/resque_worker<%= @queues_slug %>_<%= worker %>.pid
   start program = "/bin/sh -c 'cd <%= @deploy[:deploy_to] %>/current; RAILS_ENV=<%= @deploy[:rails_env] %> QUEUE=<%= node[:resque][:queues] %> VERBOSE=1 nohup rake environment resque:work& &> log/resque_worker<%= @queues_slug %>_<%= worker %>.log && echo $! > tmp/pids/resque_worker<%= @queues_slug %>_<%= worker %>.pid'" as uid <%= @deploy[:user] %> and gid <%= @deploy[:group] %>
   stop program = "/bin/sh -c 'cd <%= @deploy[:deploy_to] %>/current && kill -s QUIT `cat tmp/pids/resque_worker<%= @queues_slug %>_<%= worker %>.pid` && rm -f tmp/pids/resque_worker<%= @queues_slug %>_<%= worker %>.pid; exit 0;'"
