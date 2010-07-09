@@ -1,4 +1,5 @@
 include_recipe "deploy" # get the deployment attributes
+include_recipe "redis"
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'rails'
