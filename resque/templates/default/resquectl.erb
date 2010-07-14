@@ -20,7 +20,7 @@ case "$1" in
     fi
     ;;
   stop)
-    worker=$2
+    worker=$3
     kill -s QUIT `cat tmp/pids/resque_worker_$worker.pid` && rm -f tmp/pids/resque_worker_$worker.pid
     ;;
 esac
