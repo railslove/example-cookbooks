@@ -16,3 +16,10 @@ end
 service "monit" do
   action :restart
 end
+
+template '/usr/local/sbin/resquectl' do
+  source 'resquectl.erb'
+  mode 0755
+  owner 'root'
+  group 'root'
+end
