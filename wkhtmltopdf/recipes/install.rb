@@ -1,21 +1,21 @@
-file = "wkhtmltopdf-#{node[:wkhtmltopdf][:version]}-static-#{node[:wkhtmltopdf][:arch]}.tar.bz2"
+wkhtmltopdf_file = "wkhtmltopdf-#{node[:wkhtmltopdf][:version]}-static-#{node[:wkhtmltopdf][:arch]}.tar.bz2"
 
-remote_file "/tmp/#{file}" do
-  source "http://wkhtmltopdf.googlecode.com/files/#{file}"
+remote_file "/tmp/#{wkhtmltopdf_file}" do
+  source "http://wkhtmltopdf.googlecode.com/files/#{wkhtmltopdf_file}"
   owner 'root'
   group 'root'
   not_if do
-    File.exist?('/usr/local/bin/wkhtmltopdf')
+    File.exist?(node[:wkhtmltopdf][:binary])
   end
 end
 
-execute "tar xfvj /tmp/#{file}" do
+execute "tar xfvj /tmp/#{wkhtmltopdf_file}" do
   cwd "/tmp"
   not_if do
-    File.exist?('/usr/local/bin/wkhtmltopdf')
+    File.exist?(node[:wkhtmltopdf][:binary])
   end
 end
 
-execute "mv /tmp/wkhtmltopdf-#{node[:wkhtmltopdf][:arch]} /usr/local/bin" do
-  creates '/usr/local/bin/wkhtmltopdf'
+execute "mv /tmp/wkhtmltopdf-#{node[:wkhtmltopdf][:arch]} #{node[:wkhtmltopdf][:binary]}" do
+  creates node[:wkhtmltopdf][:binary]
 end
