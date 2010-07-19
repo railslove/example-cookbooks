@@ -11,5 +11,5 @@ execute "tar xfvj /tmp/#{file}" do
 end
 
 execute "mv /tmp/wkhtmltopdf-#{node[:wkhtmltopdf][:version]} /usr/local/bin" do
-  create '/usr/local/bin/wkhtmltopdf'
+  creates '/usr/local/bin/wkhtmltopdf'
 end
