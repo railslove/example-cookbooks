@@ -23,7 +23,7 @@ directory node[:redis][:datadir] do
   mode '0755'
 end
 
-directory '/var/log/redis' do
+directory File.dirname(node[:redis][:log_file]) do
   action :create
   owner node[:redis][:user]
   group 'root'
@@ -31,7 +31,7 @@ directory '/var/log/redis' do
 end
 
 enclosed_node = node
-ruby_block do
+ruby_block "Install binaries" do
   block do
     %w{redis-server redis-cli redis-benchmark redis-check-aof redis-check-dump}.each do |binary|
       FileUtils.install "/tmp/redis-#{enclosed_node[:redis][:version]}/#{binary}",
