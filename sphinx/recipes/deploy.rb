@@ -103,4 +103,13 @@ node[:deploy].each do |application, deploy|
     user deploy[:user]
     path "/usr/bin:/usr/local/bin:/bin"
   end
+
+  template "/etc/monit/conf.d/sphinx_#{application}.monitrc" do
+    source "sphinx.monitrc.erb"
+    owner "root"
+    mode "0644"
+  end
+
+  execute "monit reload" do
+  end
 end
