@@ -108,6 +108,7 @@ node[:deploy].each do |application, deploy|
     source "sphinx.monitrc.erb"
     owner "root"
     mode "0644"
+    variables :application => application, :deploy => deploy
   end
 
   execute "monit reload" do
