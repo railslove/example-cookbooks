@@ -1,9 +1,7 @@
 node[:deploy].each do |application, deploy|
-  queues_slug = node[:resque][:queues] == "*" ? "" : "_#{node[:resque][:queues].split(",").join("_")}"
-  template "/etc/monit/conf.d/resque_#{application}#{queues_slug}.monitrc" do
+  template "/etc/monit/conf.d/resque_#{application}.monitrc" do
     source "resque.monit.erb"
-    variables :queues_slug => queues_slug,
-              :deploy => deploy,
+    variables :deploy => deploy,
               :application => application
   end
 
