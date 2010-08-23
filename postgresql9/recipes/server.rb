@@ -1,3 +1,4 @@
+local_unpacked = "/tmp/postgresql-#{node[:postgresql9][:version]}"
 local_package = "/tmp/postgresql-#{node[:postgresql9][:version]}.tar.bz2"
 
 remote_file local_package do
@@ -9,5 +10,5 @@ execute "tar xvfj #{local_package}" do
 end
 
 execute "./configure --prefix=#{node[:postgresql9][:prefix]} && make && make install" do
-  cwd File.dirname(local_package)
+  cwd local_unpacked
 end
