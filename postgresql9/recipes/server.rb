@@ -11,11 +11,11 @@ end
 
 execute "tar xvfj #{local_package}" do
   cwd "/tmp"
-  umask '022'
+  umask 022
 end
 
 execute "./configure --prefix=#{node[:postgresql9][:prefix]} && make && make install" do
   cwd local_unpacked
-  umask '022'
+  umask 022
 end
 
