@@ -1,5 +1,5 @@
 # Temporary, until we updated our agents to have a default
-File.umask('022')
+File.umask(022)
 local_unpacked = "/tmp/postgresql-#{node[:postgresql9][:version]}"
 local_package = "/tmp/postgresql-#{node[:postgresql9][:version]}.tar.bz2"
 
