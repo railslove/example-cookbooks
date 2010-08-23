@@ -1,6 +1,8 @@
 local_unpacked = "/tmp/postgresql-#{node[:postgresql9][:version]}"
 local_package = "/tmp/postgresql-#{node[:postgresql9][:version]}.tar.bz2"
 
+package "libreadline-dev"
+
 remote_file local_package do
   source "http://ftp3.de.postgresql.org/pub/Mirrors/ftp.postgresql.org/source/v#{node[:postgresql9][:version]}/postgresql-#{node[:postgresql9][:version]}.tar.bz2"
 end
