@@ -34,14 +34,16 @@ template "/etc/init.d/postgresql" do
   mode "0755"
 end
 
+service "postgresql" do
+  action [:enable, :start]
+  supports :restart => true, :start => true
+end
+
 template "#{node[:postgresql9][:datadir]}/postgresql.conf" do
   source "postgresql.conf.erb"
   owner node[:postgresql9][:user]
   group node[:postgresql9][:group]
   mode "0644"
+  notifies :start, resources(:service => 'postgresql'), :delayed
 end
 
-service "postgresql" do
-  action [:enable, :start]
-  supports :restart => true, :start => true
-end
