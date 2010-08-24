@@ -34,6 +34,6 @@ template "/etc/init.d/postgresql" do
 end
 
 service "postgresql" do
-  action [:enable, :restart]
+  action [:enable, :start]
   supports :restart => true, :start => true
 end
