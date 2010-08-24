@@ -1,5 +1,7 @@
 # Temporary, until we updated our agents to have a default
 File.umask(022)
+include_recipe "postgresql9::prepare"
+
 local_unpacked = "/tmp/postgresql-#{node[:postgresql9][:version]}"
 local_package = "/tmp/postgresql-#{node[:postgresql9][:version]}.tar.bz2"
 
@@ -18,4 +20,3 @@ execute "./configure --prefix=#{node[:postgresql9][:prefix]} && make && make ins
   cwd local_unpacked
   umask 022
 end
-
