@@ -47,7 +47,7 @@ template "#{node[:postgresql9][:datadir]}/postgresql.conf" do
   notifies :start, resources(:service => 'postgresql'), :immediate
 end
 
-ruby do
+ruby_block do
   block do
     sleep 5
     execute %Q{#{node[:postgresql9][:prefix]}/bin/psql -c 'CREATE ROLE #{node[:postgresql9][:role]} PASSWORD "#{node[:postgresql9][:password]}" superuser createdb createrole inherit login'} do
