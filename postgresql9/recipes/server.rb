@@ -24,6 +24,7 @@ end
 execute "#{node[:postgresql9][:prefix]}/bin/initdb -D #{node[:postgresql9][:datadir]}" do
   umask 022
   user node[:postgresql9][:user]
+  not_if { File.exists?("#{node[:postgresql9][:datadir]}/PG_VERSION") }
 end
 
 template "/etc/init.d/postgresql" do
