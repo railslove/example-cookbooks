@@ -48,7 +48,7 @@ template "#{node[:postgresql9][:datadir]}/postgresql.conf" do
   notifies :start, resources(:service => 'postgresql'), :immediate
 end
 
-execute %Q{sleep 5 && #{node[:postgresql9][:prefix]}/bin/psql -c "CREATE ROLE #{node[:postgresql9][:role]} PASSWORD 'md5#{node[:postgresql9][:password]}' superuser createdb createrole inherit login"} do
+execute %Q{sleep 5 && #{node[:postgresql9][:prefix]}/bin/psql -c "CREATE ROLE #{node[:postgresql9][:role]} PASSWORD md5#{node[:postgresql9][:password]} superuser createdb createrole inherit login"} do
   user node[:postgresql9][:user]
   group node[:postgresql9][:group]
 end
