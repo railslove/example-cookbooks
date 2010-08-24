@@ -16,3 +16,4 @@ default[:postgresql9][:port] = '5432'
 default[:postgresql9][:max_connections] = 100
 default[:postgresql9][:role] = 'scalarium'
 default[:postgresql9][:password] = Digest::MD5.hexdigest(Digest::SHA1.hexdigest(seed)[0,8])
+default[:postgresql9][:shmmax] = '1342177280'

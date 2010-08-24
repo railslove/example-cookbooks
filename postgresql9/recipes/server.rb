@@ -34,6 +34,7 @@ template "/etc/init.d/postgresql" do
   mode "0755"
 end
 
+execute "sysctl -w kernel.shmmax=1342177280"
 service "postgresql" do
   action :enable
   supports :restart => true, :start => true
