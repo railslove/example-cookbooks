@@ -21,7 +21,7 @@ execute "./configure --prefix=#{node[:postgresql9][:prefix]} && make && make ins
   umask 022
 end
 
-execute "#{node[:postgresql9][:prefix]}/bin/initdb -E #{node[:postgresql][:encoding]} -D #{node[:postgresql9][:datadir]}" do
+execute "#{node[:postgresql9][:prefix]}/bin/initdb -E #{node[:postgresql9][:encoding]} -D #{node[:postgresql9][:datadir]}" do
   umask 022
   user node[:postgresql9][:user]
   not_if { File.exists?("#{node[:postgresql9][:datadir]}/PG_VERSION") }
