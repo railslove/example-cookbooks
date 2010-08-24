@@ -20,3 +20,20 @@ execute "./configure --prefix=#{node[:postgresql9][:prefix]} && make && make ins
   cwd local_unpacked
   umask 022
 end
+
+execute "#{node[:postgresql9][:prefix]}/bin/initdb -D #{node[:postgresql9][:datadir]}" do
+  umask 022
+  user node[:postgresql9][:user]
+end
+
+template "/etc/init.d/postgresql" do
+  source "postgresql.init.erb"
+  owner "root"
+  group "root"
+  mode "0755"
+end
+
+service "postgresql" do
+  action [:enable, :restart]
+  supports :restart => true, :start => true
+end
