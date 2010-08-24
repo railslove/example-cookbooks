@@ -4,3 +4,4 @@ default[:postgresql9][:prefix] = '/usr/local/pgsql'
 default[:postgresql9][:user] = "postgres"
 default[:postgresql9][:group] = "postgres"
 default[:postgresql9][:datadir] = '/vol/pgsql/data'
+default[:postgresql9][:encoding] = 'UTF8'
