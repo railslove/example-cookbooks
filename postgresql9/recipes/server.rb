@@ -35,7 +35,7 @@ template "/etc/init.d/postgresql" do
 end
 
 service "postgresql" do
-  action [:enable, :start]
+  action :enable
   supports :restart => true, :start => true
 end
 
@@ -44,10 +44,16 @@ template "#{node[:postgresql9][:datadir]}/postgresql.conf" do
   owner node[:postgresql9][:user]
   group node[:postgresql9][:group]
   mode "0644"
-  notifies :start, resources(:service => 'postgresql'), :delayed
+  notifies :start, resources(:service => 'postgresql'), :immediate
 end
 
-execute %Q{#{node[:postgresql9][:prefix]}/bin/psql -c 'CREATE ROLE #{node[:postgresql9][:role]} PASSWORD "#{node[:postgresql9][:password]}" superuser createdb createrole inherit login'} do
-  user node[:postgresql9][:user]
-  group node[:postgresql9][:group]
+ruby do
+  block do
+    sleep 5
+    execute %Q{#{node[:postgresql9][:prefix]}/bin/psql -c 'CREATE ROLE #{node[:postgresql9][:role]} PASSWORD "#{node[:postgresql9][:password]}" superuser createdb createrole inherit login'} do
+      user node[:postgresql9][:user]
+      group node[:postgresql9][:group]
+    end
+  end
 end
+
