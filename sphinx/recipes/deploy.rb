@@ -89,7 +89,7 @@ node[:deploy].each do |application, deploy|
   execute 'rake thinking_sphinx:rebuild' do
     cwd "#{deploy[:deploy_to]}/current"
     user deploy[:user]
-    environment 'RAILS_ENV' => deploy[:rails_env]
+    environment 'RAILS_ENV' => deploy[:rails_env], "HOME" => "/home/#{deploy[:user]}"
   end
 
   cron "sphinx reindex cronjob" do
