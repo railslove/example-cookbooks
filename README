@@ -1,1 +1,6 @@
 Example Chef cookbooks for Scalarium
+
+See http://github.com/scalarium/cookbooks for the standard Chef cookbooks that Scalarium distributes.
+
+LICENSE: Unless otherwise stated, cookbooks/recipes originated by Peritor/Scalarium are licensed under the Apache 2.0 license.
+See the LICENSE file. Some files are just imported and authored by others. Their license will of course apply.
