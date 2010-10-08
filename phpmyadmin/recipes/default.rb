@@ -1,3 +1,8 @@
+directory "/etc/dbconfig-common/" do
+  action :create
+  recursive true
+end
+
 template "/etc/dbconfig-common/phpmyadmin.conf" do
   source "phpmyadmin.conf.erb"
   mode "0660"
